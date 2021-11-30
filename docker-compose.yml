@@ -1,0 +1,56 @@
+version: '2'
+services:
+    database:
+        image: mysql/mysql-server
+        expose:
+        - '3307'
+        ports:
+        - '3307:3306'
+        container_name: mysql  
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=utopia
+        security_opt:
+            - seccomp:unconfined
+        volumes:
+            - C:\Jonathan\SmoothStack\Utopia\Utopia\mysql-docker-volume:/var/lib/mysql
+    flights:
+        image: jswen19109814/flight:flight
+        ports: 
+        - '9001:9001'
+        depends_on:
+            - "database"
+            - "users"
+        environment:
+            - MYSQL_DB_HOST=mysql
+            - MYSQL_DB_PORT=3306
+            - MYSQL_DB_USERNAME=root
+            - MYSQL_DB_PASSWORD=root
+            - USERS_MS_URL=http://users:9002/user
+    users:
+        image: jswen19109814/user:user
+        ports: 
+        - '9002:9002'
+        container_name: users
+        depends_on:
+            - "database"
+        environment:
+            - MYSQL_DB_HOST=mysql
+            - MYSQL_DB_PORT=3306
+            - MYSQL_DB_USERNAME=root
+            - MYSQL_DB_PASSWORD=root
+    bookings:
+        image: jswen19109814/booking:booking
+        ports: 
+        - '9003:9003'
+        depends_on:
+            - "database"
+            - "users"
+        environment:
+            - MYSQL_DB_HOST=mysql
+            - MYSQL_DB_PORT=3306
+            - MYSQL_DB_USERNAME=root
+            - MYSQL_DB_PASSWORD=root
+            - USERS_MS_URL=http://users:9002/user
+                    
+            
