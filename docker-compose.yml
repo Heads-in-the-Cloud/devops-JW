@@ -1,33 +1,19 @@
 version: '2'
 
 services:
-    database:
-        image: mysql/mysql-server
-        ports:
-        - '3307:3306'
-        container_name: mysql  
-        environment:
-            #sys env var
-            - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_DATABASE=utopia
-        security_opt:
-            - seccomp:unconfined
-        volumes:
-            - C:\Jonathan\SmoothStack\Utopia\Utopia\mysql-docker-volume:/var/lib/mysql
     flights:
         image: jswen19109814/flight:flight
         ports: 
         - '9001:9001'
         depends_on:
-            - "database"
             - "users"
         environment:
-            - MYSQL_DB_HOST=${MYSQL_DB_HOST}
-            - MYSQL_DB_PORT=${MYSQL_DB_PORT}
-            - MYSQL_DB_USERNAME=${MYSQL_DB_USERNAME}
-            - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD}
-            - USERS_MS_URL=${USERS_MS_URL}
-            - MYSQL_DB_SCHEMA=utopia
+            - MYSQL_DB_HOST=utopia.cztkke9ur9zz.us-east-2.rds.amazonaws.com
+            - MYSQL_DB_PORT=3306
+            - MYSQL_DB_USERNAME=admin
+            - MYSQL_DB_PASSWORD=09132021SmoothStack!
+            - USERS_MS_URL=http://users:9002/user
+            - MYSQL_DB_SCHEMA=jwutopia
     users:
         image: jswen19109814/user:user
         ports: 
@@ -36,12 +22,12 @@ services:
         depends_on:
             - "database"
         environment:
-            - MYSQL_DB_HOST=${MYSQL_DB_HOST}
-            - MYSQL_DB_PORT=${MYSQL_DB_PORT}
-            - MYSQL_DB_USERNAME=${MYSQL_DB_USERNAME}
-            - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD}
-            - USERS_MS_URL=${USERS_MS_URL}
-            - MYSQL_DB_SCHEMA=utopia
+            - MYSQL_DB_HOST=utopia.cztkke9ur9zz.us-east-2.rds.amazonaws.com
+            - MYSQL_DB_PORT=3306
+            - MYSQL_DB_USERNAME=admin
+            - MYSQL_DB_PASSWORD=09132021SmoothStack!
+            # - USERS_MS_URL=http://users:9002/user
+            - MYSQL_DB_SCHEMA=jwutopia
             # - MYSQL_DB_HOST=utopia.cztkke9ur9zz.us-east-2.rds.amazonaws.com   
             # - MYSQL_DB_PORT=3306
             # - MYSQL_DB_SCHEMA=jwutopia
@@ -55,11 +41,11 @@ services:
             - "database"
             - "users"
         environment:
-            - MYSQL_DB_HOST=${MYSQL_DB_HOST}
-            - MYSQL_DB_PORT=${MYSQL_DB_PORT}
-            - MYSQL_DB_USERNAME=${MYSQL_DB_USERNAME}
-            - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD}
-            - USERS_MS_URL=${USERS_MS_URL}
-            - MYSQL_DB_SCHEMA=utopia
+            - MYSQL_DB_HOST=utopia.cztkke9ur9zz.us-east-2.rds.amazonaws.com
+            - MYSQL_DB_PORT=3306
+            - MYSQL_DB_USERNAME=admin
+            - MYSQL_DB_PASSWORD=09132021SmoothStack!
+            - USERS_MS_URL=http://users:9002/user
+            - MYSQL_DB_SCHEMA=jwutopia
                     
             
