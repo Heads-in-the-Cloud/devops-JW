@@ -28,7 +28,6 @@ spec:
       - image: mysql/mysql-server
         name: mysql
         env: 
-          # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
           value: root
         ports:

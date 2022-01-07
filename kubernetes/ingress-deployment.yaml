@@ -1,0 +1,69 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: eks-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    # alb.ingress.kubernetes.io/group.name: jw-alb-group
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  rules:
+      # - host: user.jwutopia.us-east-2.elb.amazonaws.com
+        - http:
+            paths:
+              - path: /user
+                pathType: Prefix
+                backend:
+                  service:
+                    name: user
+                    port: 
+                      number: 80
+      # - host: booking.jwutopia.us-east-2.elb.amazonaws.com
+        - http:
+            paths:
+              - path: /booking
+                pathType: Prefix
+                backend: 
+                  service:
+                      name: booking
+                      port: 
+                        number: 80
+      # - host: flight.jwutopia.us-east-2.elb.amazonaws.com
+        - http:
+            paths:
+              - path: /airplane
+                pathType: Prefix
+                backend:
+                  service:
+                    name: flight
+                    port: 
+                      number: 80
+              - path: /airplanetype
+                pathType: Prefix
+                backend:
+                  service:
+                    name: flight
+                    port: 
+                      number: 80
+              - path: /airport
+                pathType: Prefix
+                backend:
+                  service:
+                    name: flight
+                    port: 
+                      number: 80
+              - path: /flight
+                pathType: Prefix
+                backend:
+                  service:
+                    name: flight
+                    port: 
+                      number: 80
+              - path: /route
+                pathType: Prefix
+                backend:
+                  service:
+                    name: flight
+                    port: 
+                      number: 80

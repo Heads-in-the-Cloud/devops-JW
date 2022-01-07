@@ -1,38 +1,37 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: user
+  name: booking
 spec:
+  type: NodePort
   ports:
-  - port: 9002
+  - port: 80
+    targetPort: 80
+    protocol: TCP
   selector:
-    app: user
-  clusterIP: None
+    app.kubernetes.io/name: booking
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user
+  name: booking
 spec:
   selector:
     matchLabels:
-      app: user
-  strategy:
-    type: Recreate
+      app.kubernetes.io/name: booking
   template:
     metadata:
       labels:
-        app: user
+        app.kubernetes.io/name: booking
     spec:
       containers:
-      - image: jswen19109814/user:user
-        name: user
+      - image: jswen19109814/booking:booking
         imagePullPolicy: Always
         env: 
         - name: SERVER_PORT
-          value: 9002
-        - name: MYSQL_DB_HOST
-          value: "mysql"
+          value: "80"
+        - name: MYSQL_DB_HOST 
+          value: "utopia.cztkke9ur9zz.us-east-2.rds.amazonaws.com"
         - name: MYSQL_DB_PORT
           value: "3306"
         - name: MYSQL_DB_USERNAME
@@ -45,6 +44,10 @@ spec:
             secretKeyRef:
               name: database-secret
               key: password
+        - name: MYSQL_DB_SCHEMA
+          value: "jwutopia"
+        - name: USERS_MS_URL
+          value:  "http://user:80/user"
+        name: booking
         ports:
-        - containerPort: 9002
-          name: user
+        - containerPort: 80
