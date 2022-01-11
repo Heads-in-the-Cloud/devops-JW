@@ -35,35 +35,19 @@ spec:
         - name: MYSQL_DB_PORT
           value: "3306"
         - name: MYSQL_DB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: database-secret
-              key: username
+          value: "admin"
+          # valueFrom:
+          #   secretKeyRef:
+          #     name: database-secret
+          #     key: username
         - name: MYSQL_DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: database-secret
-              key: password
+          value: 09132021SmoothStack!
+          # valueFrom:
+          #   secretKeyRef:
+          #     name: database-secret
+          #     key: password
         - name: MYSQL_DB_SCHEMA
           value: "jwutopia"
         name: user
         ports:
         - containerPort: 80
----
-# apiVersion: networking.k8s.io/v1beta1
-# kind: Ingress
-# metadata:
-#   name: user-ingress
-#   annotations:
-#     kubernetes.io/ingress.class: alb
-#     alb.ingress.kubernetes.io/group.name: jw-alb-group
-#     alb.ingress.kubernetes.io/scheme: internet-facing
-#     alb.ingress.kubernetes.io/target-type: ip
-# spec:
-#   rules:
-#       - http:
-#           paths:
-#             - path: /*
-#               backend:
-#                 serviceName: user
-#                 servicePort: 80
