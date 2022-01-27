@@ -1,10 +1,18 @@
 pipeline {
     agent any
-    stages {
-        stage('Docker build') {
-            steps {
-                echo 'Running docker-compose: '
-                sh 'docker-compose up'
+        environment{
+
+        }
+        stage('Terraform plan'){
+            steps{
+                sh "terraform init"
+                sh "terraform plan"
+            }
+        }
+        stage('Terraform apply'){
+            steps{
+                sh "terraform apply -input=false"
+                echo "done!"
             }
         }
     }
