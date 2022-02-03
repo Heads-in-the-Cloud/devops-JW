@@ -6,7 +6,7 @@ pipeline {
     stages{
         stage('Terraform plan'){
             steps{
-                dir("terraform/destroy"){
+                dir("terraform"){
                     sh "terraform init"
                     sh "terraform plan -destroy -out destroyplan.tf-${COMMIT_HASH}"
                 }
@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Terraform destroy'){
             steps{
-                dir("terraform/destroy"){
+                dir("terraform"){
                     sh "terraform destroy --auto-approve destroyplan.tf-${COMMIT_HASH}"
                     echo "done!"
                 }
