@@ -14,14 +14,14 @@ pipeline {
         }
         // stage('Terraform destroy'){
         //     steps{
-        //         sh "terraform destroy --auto-approve"
+        //         sh "terraform destroy -no-color --auto-approve"
         //         echo "done!"
         //     }
         // }
         stage('Terraform apply'){
             steps{
                 dir("terraform"){
-                    sh "terraform apply --auto-approve plan.tf-${COMMIT_HASH}"
+                    sh "terraform apply --auto-approve -no-color plan.tf-${COMMIT_HASH}"
                 }
             }
         }

@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    environment{
+        COMMIT_HASH = sh(returnStdout: true, script: "git rev-parse --short=8 HEAD").trim()
+    }
+    stages{
+        stage('Terraform plan'){
+            steps{
+                dir("terraform/destroy"){
+                    sh "terraform init"
+                    sh "terraform plan -destroy -out destroyplan.tf-${COMMIT_HASH}"
+                }
+            }
+        }
+        stage('Terraform destroy'){
+            steps{
+                dir("terraform/destroy"){
+                    sh "terraform destroy --auto-approve destroyplan.tf-${COMMIT_HASH}"
+                    echo "done!"
+                }
+
+            }
+        }
+    }
+}
