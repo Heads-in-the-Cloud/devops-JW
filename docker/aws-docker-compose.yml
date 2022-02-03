@@ -1,7 +1,7 @@
 version: '2'
 services:
     flights:
-        image: 902316339693.dkr.ecr.us-east-2.amazonaws.com/jw-flights:flightimage
+        image: ${ECR_FLIGHT}
         ports: 
         - '9001'
         depends_on:
@@ -15,7 +15,7 @@ services:
             - USERS_MS_URL=http://users:9002/user
             - SERVER_PORT=9001
     users:
-        image: 902316339693.dkr.ecr.us-east-2.amazonaws.com/jw-users:userimage
+        image: ${ECR_USER}
         ports: 
         - '9002'
         container_name: users
@@ -33,7 +33,7 @@ services:
                 awslogs-group: "jw-utopia"
                 awslogs-stream-prefix: "docker-compose-ecs-stream"
     bookings:
-        image: 902316339693.dkr.ecr.us-east-2.amazonaws.com/jw-bookings:bookingimage
+        image: ${ECR_BOOKING}
         ports: 
         - '9003'
         depends_on:

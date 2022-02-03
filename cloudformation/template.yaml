@@ -1,0 +1,3 @@
+Resources:
+  RDS:
+    Type: AWS::RDS::DBInstance
