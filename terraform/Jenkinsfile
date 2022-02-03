@@ -8,7 +8,7 @@ pipeline {
             steps{
                 dir("terraform"){
                     sh "terraform init"
-                    sh "terraform plan -out plan.tf-${COMMIT-HASH}"
+                    sh "terraform plan -out plan.tf-${COMMIT_HASH}"
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
         stage('Terraform apply'){
             steps{
                 dir("terraform"){
-                    sh "terraform apply --auto-approve plan.tf-${COMMIT-HASH}"
+                    sh "terraform apply --auto-approve plan.tf-${COMMIT_HASH}"
                 }
             }
         }
