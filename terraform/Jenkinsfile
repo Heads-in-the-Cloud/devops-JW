@@ -9,7 +9,7 @@ pipeline {
                 dir("terraform"){
                     sh "dir"
                     sh "terraform init"
-                    sh "terraform plan -out plans/plan-${COMMIT_HASH}.tf -no-color > plan-${COMMIT_HASH}.txt"
+                    sh "terraform plan -out plan-${COMMIT_HASH}.tf -no-color > plan-${COMMIT_HASH}.txt"
                     //need to scan the document here 
                 }
             }
