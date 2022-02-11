@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment{
         COMMIT_HASH = sh(returnStdout: true, script: "git rev-parse --short=8 HEAD").trim()
+        CHECK_LINE
     }
     stages{
         stage('Terraform plan'){
@@ -11,6 +12,8 @@ pipeline {
                     sh "terraform init"
                     sh "terraform plan -out plans/plan-${COMMIT_HASH}.tf -no-color > plans/plan-${COMMIT_HASH}.txt"
                     //need to scan the document here 
+                    CHECK_LINE = sh "tail -n 1 plans/plan-${COMMIT_HASH}.txt"
+                    echo "${CHECK_LINE}"
                 }
             }
         }
