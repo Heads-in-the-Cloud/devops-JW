@@ -14,12 +14,12 @@ pipeline {
                 }
             }
         }
-        // stage('Terraform apply'){
-        //     steps{
-        //         dir("terraform"){
-        //             sh "terraform apply --auto-approve -no-color plan.tf-${COMMIT_HASH}"
-        //         }
-        //     }
-        // }
+        stage('Terraform apply'){
+            steps{
+                dir("terraform"){
+                    sh "terraform apply --auto-approve -no-color plan.tf-${COMMIT_HASH}"
+                }
+            }
+        }
     }
 }
