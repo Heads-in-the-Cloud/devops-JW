@@ -1,15 +1,4 @@
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      # version -- is optional (need to check what this is)
-    }
-  }
-}
-provider "aws" {
-  profile = "default"
-  region  = "us-east-2" 
-}   
+
 resource "aws_instance" "terraform_ec2_instance" {
 
   ami = "ami-002068ed284fb165b"
