@@ -8,7 +8,7 @@ pipeline {
             steps{
                 dir("terraform"){
                     sh "dir"
-                    sh "terraform init --auto-approve"
+                    sh "terraform init -input=false"
                     sh "terraform plan -out plans/plan-${COMMIT_HASH}.tf -no-color > plans/plan-${COMMIT_HASH}.txt"
                     //need to scan the document here 
                 }
