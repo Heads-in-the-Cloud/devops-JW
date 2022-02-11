@@ -1,0 +1,119 @@
+AWSTemplateFormatVersion: 2010-09-09
+Metadata:
+  'AWS::CloudFormation::Designer':
+    bb3b0d2a-db79-4638-a6c0-e0b464f59680:
+      size:
+        width: 140
+        height: 140
+      position:
+        x: 420
+        'y': 150
+      z: 0
+      embeds: []
+    3bc4638c-e557-46e5-b427-31f345035c9b:
+      size:
+        width: 140
+        height: 140
+      position:
+        x: 207
+        'y': 144
+      z: 0
+      embeds: []
+    dacb2c35-5db9-474f-b7e8-4b0ae10f6e7f:
+      size:
+        width: 140
+        height: 140
+      position:
+        x: 590
+        'y': 150
+      z: 0
+      embeds: []
+    ba0ca7d7-c939-4c80-b0fc-891b45a175e7:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 820
+        'y': 180
+      z: 0
+    6c3064dc-3d7d-48d7-9089-1bc2df0ab9ac:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 264
+        'y': 306
+      z: 0
+    379e1a9b-baa7-49b8-b6d0-2b2635bda717:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 970
+        'y': 280
+      z: 0
+    18402c29-8be5-4e4e-ab3a-928c880ab240:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 806
+        'y': 340
+      z: 0
+    731bcd76-8851-4d50-950c-6f36dcbffb28:
+      size:
+        width: 60
+        height: 60
+      position:
+        x: 1007
+        'y': 175
+      z: 0
+Resources:
+  EC2S3KR6C:
+    Type: 'AWS::EC2::Subnet'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: bb3b0d2a-db79-4638-a6c0-e0b464f59680
+  EC2VPC18V4F:
+    Type: 'AWS::EC2::VPC'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 3bc4638c-e557-46e5-b427-31f345035c9b
+  EC2S3VM8P:
+    Type: 'AWS::EC2::Subnet'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: dacb2c35-5db9-474f-b7e8-4b0ae10f6e7f
+  IAMR3HJMV:
+    Type: 'AWS::IAM::Role'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: ba0ca7d7-c939-4c80-b0fc-891b45a175e7
+  ECRR1JED1:
+    Type: 'AWS::ECR::Repository'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 6c3064dc-3d7d-48d7-9089-1bc2df0ab9ac
+  EC2IG2ZM6H:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 379e1a9b-baa7-49b8-b6d0-2b2635bda717
+  EC2NGLJCY:
+    Type: 'AWS::EC2::NatGateway'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 18402c29-8be5-4e4e-ab3a-928c880ab240
+  ELBLB54XLJ:
+    Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
+    Properties: {}
+    Metadata:
+      'AWS::CloudFormation::Designer':
+        id: 731bcd76-8851-4d50-950c-6f36dcbffb28

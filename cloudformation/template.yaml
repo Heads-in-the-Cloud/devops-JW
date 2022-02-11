@@ -1,3 +1,85 @@
 Resources:
-  RDS:
-    Type: AWS::RDS::DBInstance
+  jwCFVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+  #-------Subnets
+  jwSubnetPub1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref jwCFVPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: "us-east-2a"
+      MapPublicIpOnLaunch: true
+  jwSubnetPub2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref jwCFVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: "us-east-2a"
+      MapPublicIpOnLaunch: true
+  jwSubnetPriv:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref jwCFVPC
+      AvailabilityZone: "us-east-2b"
+      CidrBlock: 10.0.2.0/24
+      # MapPublicIpOnLaunch: false
+      
+  #Internet Gateway
+  jwIGW:
+    Type: AWS::EC2::InternetGateway
+    # Properties:
+
+  jwIGWAttach:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref jwIGW
+      VpcId: !Ref jwCFVPC
+
+  #Node for EKS cluster
+  EKSNodegroup:
+    Type: 'AWS::EKS::Nodegroup'
+    Properties:
+      ClusterName: HITEC-Cluster
+      NodeRole: 'arn:aws:iam::902316339693:role/EKSWorkerNode'
+      ScalingConfig:
+        MinSize: 1
+        DesiredSize: 1
+        MaxSize: 1
+      Subnets:
+        - !Ref jwSubnetPub1
+        - !Ref jwSubnetPub2
+
+  #Route Table
+  PubRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref jwCFVPC
+      
+  PubRoute:
+    Type: AWS::EC2::Route
+    DependsOn: jwIGWAttach
+    Properties:
+      RouteTableId: !Ref PubRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref jwIGW
+
+  PubRouteAssoc1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PubRouteTable
+      SubnetId: !Ref jwSubnetPub1
+
+  PublicRouteAssoc2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PubRouteTable
+      SubnetId: !Ref jwSubnetPub2
+  # EC2SecGroup:
+  #   Type: AWS::EC2::SecurityGroup
+  #   Properities:
+  #     GroupName: sec_group
+  #     VpcId: !Ref jwCFVPC

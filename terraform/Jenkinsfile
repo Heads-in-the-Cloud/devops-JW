@@ -8,22 +8,17 @@ pipeline {
             steps{
                 dir("terraform"){
                     sh "terraform init"
-                    sh "terraform plan -out plan.tf-${COMMIT_HASH}"
+                    sh "terraform plan -out plans/plan-${COMMIT_HASH}.tf -no-color > plans/plan-${COMMIT_HASH}.txt"
+                    //need to scan the document here 
                 }
             }
         }
-        // stage('Terraform destroy'){
+        // stage('Terraform apply'){
         //     steps{
-        //         sh "terraform destroy -no-color --auto-approve"
-        //         echo "done!"
+        //         dir("terraform"){
+        //             sh "terraform apply --auto-approve -no-color plan.tf-${COMMIT_HASH}"
+        //         }
         //     }
         // }
-        stage('Terraform apply'){
-            steps{
-                dir("terraform"){
-                    sh "terraform apply --auto-approve -no-color plan.tf-${COMMIT_HASH}"
-                }
-            }
-        }
     }
 }
