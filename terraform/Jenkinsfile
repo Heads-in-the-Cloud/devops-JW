@@ -17,21 +17,23 @@ pipeline {
         }
         stage('Check Plan'){
             steps {
-                dir("terraform"){
-                    script{
-                        env.CHECK_LINE = sh (script: "tail -n 1 plans/plan-${COMMIT_HASH}.txt", returnStdout: true).trim()
-                        echo "${CHECK_LINE}"
-                        if(env.CHECK_LINE == "and found no differences, so no changes are needed."){  
-                            error("No changes in plan from current state implemented")
-                        }
-                    }
+                script{
+                    env.CHECK_LINE = sh (script: "tail -n 1 plans/plan-${COMMIT_HASH}.txt", returnStdout: true).trim()
+                    echo "${CHECK_LINE}"
                 }
             }
         }
         stage('Terraform apply'){
             steps{
                 dir("terraform"){
-                        sh "terraform apply --auto-approve -no-color plans/plan-${COMMIT_HASH}.tf"   
+                    script{
+                        if(env.CHECK_LINE!="and found no differences, so no changes are needed."){  
+                            sh "terraform apply --auto-approve -no-color plans/plan-${COMMIT_HASH}.tf"
+                        }
+                        else{
+                            error("No changes in plan from current state implemented")
+                        }
+                    }   
                 }
             }
         }
