@@ -11,18 +11,16 @@ pipeline {
                     sh "terraform init"
                     sh "terraform plan -out plans/plan-${COMMIT_HASH}.tf -no-color > plans/plan-${COMMIT_HASH}.txt"
 
-                   
-                }
-            }
-        }
-        stage('Check Plan'){
-            steps {
-                dir(terraform){
                     script{
                         env.CHECK_LINE = sh (script: "tail -n 1 plans/plan-${COMMIT_HASH}.txt", returnStdout: true).trim()
                         echo "${CHECK_LINE}"
                     }
                 }
+            }
+        }
+        stage('Check Plan'){
+            steps {
+                echo "${CHECK_LINE}"
             }
         }
         stage('Terraform apply'){
@@ -33,7 +31,7 @@ pipeline {
                             sh "terraform apply --auto-approve -no-color plans/plan-${COMMIT_HASH}.tf"
                         }
                         else{
-                            error("No changes in plan from current state implemented")
+                            error("No changes implemented")
                         }
                     }   
                 }
