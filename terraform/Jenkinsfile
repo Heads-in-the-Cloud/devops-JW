@@ -10,10 +10,18 @@ pipeline {
                     sh "dir"
                     sh "terraform init"
                     sh "terraform plan -out plans/plan-${COMMIT_HASH}.tf -no-color > plans/plan-${COMMIT_HASH}.txt"
-                    //need to scan the document here 
-                    script{
-                        env.CHECK_LINE = sh (script: "tail -n 1 plans/plan-${COMMIT_HASH}.txt", returnStdout: true).trim()
-                        echo "${CHECK_LINE}"
+
+                   
+                }
+            }
+        }
+        stage('Check Plan'){
+            steps {
+                script{
+                    env.CHECK_LINE = sh (script: "tail -n 1 plans/plan-${COMMIT_HASH}.txt", returnStdout: true).trim()
+                    echo "${CHECK_LINE}"
+                    if(env.CHECK_LINE == "and found no differences, so no changes are needed."){  
+                         error("No changes in plan from current state implemented")
                     }
                 }
             }
@@ -21,14 +29,7 @@ pipeline {
         stage('Terraform apply'){
             steps{
                 dir("terraform"){
-                    script{
-                        if(env.CHECK_LINE!="and found no differences, so no changes are needed."){  
-                            sh "terraform apply --auto-approve -no-color plans/plan-${COMMIT_HASH}.tf"
-                        }
-                        else{
-                            error("No changes implemented")
-                        }
-                    }   
+                        sh "terraform apply --auto-approve -no-color plans/plan-${COMMIT_HASH}.tf"   
                 }
             }
         }
