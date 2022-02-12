@@ -12,8 +12,7 @@ pipeline {
                     sh "terraform plan -out plans/plan-${COMMIT_HASH}.tf -no-color > plans/plan-${COMMIT_HASH}.txt"
                     //need to scan the document here 
                     script{
-                        env.CHECK_LINE = sh "tail -n 1 plans/plan-${COMMIT_HASH}.txt"
-                        env.CHECK_LINE = "test value"
+                        env.CHECK_LINE = sh (script: "tail -n 1 plans/plan-${COMMIT_HASH}.txt", returnStdout: true).trim()
                         echo "${CHECK_LINE}"
                     }
                 }
