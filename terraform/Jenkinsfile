@@ -3,6 +3,9 @@ pipeline {
     environment{
         COMMIT_HASH = sh(returnStdout: true, script: "git rev-parse --short=8 HEAD").trim()
     }
+    parameters {
+        booleanParam(name: "apply-check", defaultValue: false)
+    }
     stages{
         stage('Terraform plan'){
             steps{
@@ -18,7 +21,15 @@ pipeline {
                 }
             }
         }
+        stage('Checking plan output'){
+            steps{
+                if(env.CHECK_LINE!="and found no differences, so no changes are needed."){
+                    params.apply-check = true
+                }
+            }
+        }
         stage('Terraform apply'){
+            when { expression { params.apply-check } }
             steps{
                 dir("terraform"){
                     sh "terraform apply --auto-approve -no-color plans/plan-${COMMIT_HASH}.tf"
