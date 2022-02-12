@@ -25,12 +25,14 @@ pipeline {
             when { expression { params.apply-check } }
             steps{
                 dir("terraform"){
-                    if(env.CHECK_LINE!="and found no differences, so no changes are needed."){  
-                        sh "terraform apply --auto-approve -no-color plans/plan-${COMMIT_HASH}.tf"
-                    }
-                    else{
-                        error("No changes implemented")
-                    }
+                    script{
+                        if(env.CHECK_LINE!="and found no differences, so no changes are needed."){  
+                            sh "terraform apply --auto-approve -no-color plans/plan-${COMMIT_HASH}.tf"
+                        }
+                        else{
+                            error("No changes implemented")
+                        }
+                    }   
                 }
             }
         }
