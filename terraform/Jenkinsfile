@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script{
                     echo "${CHECK_LINE}"
-                    if(env.CHECK_LINE!="and found no differences, so no changes are needed."){
+                    if(env.CHECK_LINE == "and found no differences, so no changes are needed."){
                         error("No changes implemented")
                     }
                 } 
