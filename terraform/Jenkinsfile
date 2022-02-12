@@ -17,11 +17,13 @@ pipeline {
         }
         stage('Check Plan'){
             steps {
-                script{
-                    env.CHECK_LINE = sh (script: "tail -n 1 plans/plan-${COMMIT_HASH}.txt", returnStdout: true).trim()
-                    echo "${CHECK_LINE}"
-                    if(env.CHECK_LINE == "and found no differences, so no changes are needed."){  
-                         error("No changes in plan from current state implemented")
+                dir("terraform"){
+                    script{
+                        env.CHECK_LINE = sh (script: "tail -n 1 plans/plan-${COMMIT_HASH}.txt", returnStdout: true).trim()
+                        echo "${CHECK_LINE}"
+                        if(env.CHECK_LINE == "and found no differences, so no changes are needed."){  
+                            error("No changes in plan from current state implemented")
+                        }
                     }
                 }
             }
