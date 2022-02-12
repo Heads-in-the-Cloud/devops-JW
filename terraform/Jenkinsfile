@@ -20,7 +20,12 @@ pipeline {
         }
         stage('Check Plan'){
             steps {
-                echo "${CHECK_LINE}"
+                script{
+                    echo "${CHECK_LINE}"
+                    if(env.CHECK_LINE!="and found no differences, so no changes are needed."){
+                        error("No changes implemented")
+                    }
+                } 
             }
         }
         stage('Terraform apply'){
