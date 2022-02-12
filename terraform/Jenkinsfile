@@ -13,7 +13,8 @@ pipeline {
                     //need to scan the document here 
                     script{
                         env.CHECK_LINE = sh "tail -n 1 plans/plan-${COMMIT_HASH}.txt"
-                        echo "${CHECK_LINE}"
+                        env.CHECK_LINE = "test value"
+                        echo ${CHECK_LINE}
                     }
                 }
             }
