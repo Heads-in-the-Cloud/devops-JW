@@ -16,7 +16,7 @@ pipeline {
             steps{
                 dir("terraform"){
                     sh "terraform apply --auto-approve destroyplan.tf-${COMMIT_HASH}"
-                    echo "done!"
+                    echo "destroy complete"
                 }
 
             }

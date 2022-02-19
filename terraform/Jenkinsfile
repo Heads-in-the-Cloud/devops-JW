@@ -30,15 +30,8 @@ pipeline {
         }
         stage('Terraform apply'){
             steps{
-                dir("terraform"){
-                    script{
-                        if(env.CHECK_LINE!="and found no differences, so no changes are needed."){  
-                            sh "terraform apply --auto-approve -no-color plans/plan-${COMMIT_HASH}.tf"
-                        }
-                        else{
-                            error("No changes implemented")
-                        }
-                    }   
+                dir("terraform"){  
+                    sh "terraform apply --auto-approve -no-color plans/plan-${COMMIT_HASH}.tf"
                 }
             }
         }
