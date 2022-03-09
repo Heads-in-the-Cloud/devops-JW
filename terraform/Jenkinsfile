@@ -18,17 +18,10 @@ pipeline {
                 }
             }
         }
-        stage('Check Plan'){
-            steps {
-                script{
-                    echo "${CHECK_LINE}"
-                    if(env.CHECK_LINE == "and found no differences, so no changes are needed."){
-                        error("No changes implemented")
-                    }
-                } 
-            }
-        }
         stage('Terraform apply'){
+            when{
+                expression{env.CHECK_LINE != "and found no differences, so no changes are needed."}
+            }
             steps{
                 dir("terraform"){  
                     sh "terraform apply --auto-approve -no-color plans/plan-${COMMIT_HASH}.tf"
