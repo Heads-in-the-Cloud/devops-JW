@@ -15,12 +15,6 @@ services:
             - USERS_MS_URL=http://users:9002/user
             - MYSQL_DB_SCHEMA=jwutopia
             - SERVER_PORT=9001
-        logging:
-            driver: "awslogs"
-            options:
-                awslogs-region: "us-east-2"
-                awslogs-group: "jw-utopia-flights"
-                awslogs-stream-prefix: "docker-compose-ecs-stream"
     users:
         image: 902316339693.dkr.ecr.us-east-2.amazonaws.com/jw-users:userimage
         ports: 
@@ -33,12 +27,6 @@ services:
             - MYSQL_DB_PASSWORD=09132021SmoothStack!
             - MYSQL_DB_SCHEMA=jwutopia
             - SERVER_PORT=9002
-        logging:
-            driver: "awslogs"
-            options:
-                awslogs-region: "us-east-2"
-                awslogs-group: "jw-utopia-users"
-                awslogs-stream-prefix: "docker-compose-ecs-stream"
     bookings:
         image: 902316339693.dkr.ecr.us-east-2.amazonaws.com/jw-bookings:bookingimage
         ports: 
@@ -53,11 +41,5 @@ services:
             - USERS_MS_URL=http://users:9002/user
             - MYSQL_DB_SCHEMA=jwutopia
             - SERVER_PORT=9003
-        logging:
-            driver: "awslogs"
-            options:
-                awslogs-region: "us-east-2"
-                awslogs-group: "jw-utopia-bookings"
-                awslogs-stream-prefix: "docker-compose-ecs-stream"
                     
             
