@@ -85,9 +85,3 @@ resource "aws_kms_key" "tf_key" {
   description = "Jon key 1"
   deletion_window_in_days = 10
 }
-# resource "aws_s3_bucket" "terraform_jon_ss_jesus_christ_bucket" {
-#   bucket = "my-tf-test-bucket"
-#   tags = {
-#     Name        = "terraform_jon_ss_bucket"
-#   }
-# }
