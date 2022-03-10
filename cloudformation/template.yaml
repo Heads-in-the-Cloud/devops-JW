@@ -5,7 +5,9 @@ Parameters:
   EKSSubnet2:
     Type: String
     Default: ""
-  
+  NodeRole:
+    Type: String
+    Default: ""
 Resources:
   jwCFVPC:
     Type: AWS::EC2::VPC
@@ -42,7 +44,7 @@ Resources:
     Type: 'AWS::EKS::Nodegroup'
     Properties:
       ClusterName: HITEC-Cluster
-      NodeRole: 'arn:aws:iam::902316339693:role/EKSWorkerNode'
+      NodeRole: !Ref NodeRole
       ScalingConfig:
         MinSize: 1
         DesiredSize: 1
