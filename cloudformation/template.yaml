@@ -30,14 +30,20 @@ Resources:
       CidrBlock: 10.0.1.0/24
       AvailabilityZone: !Select [ 0, !GetAZs ]
       MapPublicIpOnLaunch: true
-  jwSubnetPriv:
+  jwSubnetPriv1:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref jwCFVPC
       AvailabilityZone: !Select [ 0, !GetAZs ]
       CidrBlock: 10.0.2.0/24
       # MapPublicIpOnLaunch: false
-      
+  jwSubnetPriv2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref jwCFVPC
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      CidrBlock: 10.0.2.0/24
+      # MapPublicIpOnLaunch: false    
 
   #Node for EKS cluster
   EKSNodegroup:
