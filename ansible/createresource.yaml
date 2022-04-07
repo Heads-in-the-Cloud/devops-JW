@@ -61,4 +61,14 @@
        with_items: "{{ ec2.instances }}"
        args:
          tags:
-           Name: MyTargetEc2Instance
+           Name: testansible
+           type: jwansible
+    
+
+     - name: ec2 instance info
+       debug: 
+         msg: "{{ec2}}"
+
+
+
+       
