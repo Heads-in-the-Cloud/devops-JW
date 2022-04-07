@@ -68,6 +68,15 @@
      - name: ec2 instance info
        debug: 
          msg: "{{ec2.instances[0].public_ip}}"
+    
+     - name: Add to route 53
+        community.aws.route53:
+         state: present
+         zone: hitec.link
+         record: ansiblejw.hitec.link
+         type: A
+         value: {{ec2.instances[0].public_ip}}
+
 
 
        
