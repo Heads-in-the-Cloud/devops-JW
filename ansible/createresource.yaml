@@ -6,20 +6,20 @@
 
    vars:
      keypair: jw-key-pem
-     instance_type: t2.micro
-     image:  ami-064ff912f78e3e561
-     wait: yes
      group: webserver
      count: 1
      region: us-east-2
      security_group: testSecGroup
+     instance_type: t2.micro
+     image:  ami-064ff912f78e3e561
+
    
    tasks:
      - name: Create my security group
        local_action: 
          module: ec2_group
          name: "{{ security_group }}"
-         description: Security Group for webserver Servers
+         description: Security Group for ec2
          region: "{{ region }}"
          rules:
             - proto: tcp
@@ -41,7 +41,7 @@
          rules_egress:
             - proto: all
               cidr_ip: 0.0.0.0/0
-       register: basic_firewall
+       register: secGroup
 
 
      - name: Launch the new EC2 Instance
