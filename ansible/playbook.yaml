@@ -5,13 +5,13 @@
   
   tasks:
   - name: install openJDK
-    yum: 
+    ansible.builtin.yum: 
       name: java
       state: latest
   
 
   - name: install java8 for jenkins 
-    yum:
+    ansible.builtin.yum:
       name: java-1.8.0-openjdk-devel
       state: present
 
