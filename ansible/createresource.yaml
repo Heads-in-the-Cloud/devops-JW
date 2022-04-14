@@ -70,7 +70,7 @@
          msg: "{{ ec2.instances[0].public_ip }}"
     
      - name: Add to route 53
-       community.aws.route53:
+       route53:
          state: present
          zone: hitec.link
          record: ansiblejw.hitec.link
