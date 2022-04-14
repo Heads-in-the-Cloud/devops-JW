@@ -75,7 +75,7 @@
          zone: hitec.link
          record: ansiblejw.hitec.link
          type: A
-         value: {{ec2.instances[0].public_ip}}
+         value: "{{ec2.instances[0].public_ip}}""
 
 
 
