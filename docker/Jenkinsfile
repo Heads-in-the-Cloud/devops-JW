@@ -1,0 +1,14 @@
+pipeline {
+    agent any
+    stages {
+        stage('Docker build') {
+            steps {
+                dir("docker"){
+                    sh 'pwd'
+                    echo 'Running docker-compose: '
+                    sh 'docker-compose up'
+                }
+            }
+        }
+    }
+}

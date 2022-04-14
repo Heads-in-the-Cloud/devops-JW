@@ -1,0 +1,102 @@
+Parameters:
+  EKSSubnet1:
+    Type: String
+    Default: ""
+  EKSSubnet2:
+    Type: String
+    Default: ""
+  NodeRole:
+    Type: String
+    Default: ""
+Resources:
+  jwCFVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+  #-------Subnets
+  jwSubnetPub1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref jwCFVPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      MapPublicIpOnLaunch: true
+  jwSubnetPub2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref jwCFVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      MapPublicIpOnLaunch: true
+  jwSubnetPriv1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref jwCFVPC
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      CidrBlock: 10.0.2.0/24
+      # MapPublicIpOnLaunch: false
+  jwSubnetPriv2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref jwCFVPC
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      CidrBlock: 10.0.2.0/24
+      # MapPublicIpOnLaunch: false    
+
+  #Node for EKS cluster
+  EKSNodegroup:
+    Type: 'AWS::EKS::Nodegroup'
+    Properties:
+      ClusterName: HITEC-Cluster
+      NodeRole: !Ref NodeRole
+      ScalingConfig:
+        MinSize: 1
+        DesiredSize: 1
+        MaxSize: 1
+      Subnets:
+        - !Ref EKSSubnet1
+        - !Ref EKSSubnet2
+
+  #Internet Gateway
+  jwIGW:
+    Type: AWS::EC2::InternetGateway
+    # Properties:
+
+  jwIGWAttach:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref jwIGW
+      VpcId: !Ref jwCFVPC
+      
+  #Route Table
+  PubRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref jwCFVPC
+      
+  PubRoute:
+    Type: AWS::EC2::Route
+    DependsOn: jwIGWAttach
+    Properties:
+      RouteTableId: !Ref PubRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref jwIGW
+
+  PubRouteAssoc1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PubRouteTable
+      SubnetId: !Ref jwSubnetPub1
+
+  PublicRouteAssoc2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PubRouteTable
+      SubnetId: !Ref jwSubnetPub2
+  # EC2SecGroup:
+  #   Type: AWS::EC2::SecurityGroup
+  #   Properities:
+  #     GroupName: sec_group
+  #     VpcId: !Ref jwCFVPC

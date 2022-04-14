@@ -1,0 +1,59 @@
+---
+- hosts: tag_type_jwansible
+  gather_facts: no
+  become: true
+  
+  tasks:
+  - name: install openJDK
+    yum: 
+      name: java
+      state: latest
+  
+
+  - name: install java8 for jenkins 
+    yum:
+      name: java-1.8.0-openjdk-devel
+      state: present
+
+
+  - name: set java version to java8
+    ansible.builtin.shell: update-alternatives --set java java-1.8.0-openjdk.x86_64
+
+  - name: Download Long Term Jenkins release
+    get_url:
+      url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+      dest: /etc/yum.repos.d/jenkins.repo
+                          
+
+  - name: Import jenkins key from url
+    ansible.builtin.rpm_key:
+      state: present
+      key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key 
+
+ 
+  - name: install Jenkins 
+    yum:
+      name: jenkins
+      state: latest
+
+
+  - name: install docker
+    yum:
+      name: docker
+      state: latest
+
+
+  - name: install awscli
+    yum:
+      name: awscli
+      state: latest
+
+  - name: start jenkins 
+    ansible.builtin.shell: systemctl start jenkins 
+  - name: start docker
+    ansible.builtin.shell: systemctl start docker
+    ansible.builtin.shell: chmod 666 /var/run/docker.sock
+  
+  - name: add jenkins user to docker group 
+    ansible.builtin.shell: groupadd docker
+    ansible.builtin.shell: usermod -aG docker $USER

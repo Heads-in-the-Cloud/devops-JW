@@ -1,0 +1,45 @@
+version: '2'
+
+services:
+    flights:
+        image: 902316339693.dkr.ecr.us-east-2.amazonaws.com/jw-flights:flightimage
+        ports: 
+        - '9001:9001'
+        depends_on:
+            - "users"
+        environment:
+            - MYSQL_DB_HOST=utopia.cztkke9ur9zz.us-east-2.rds.amazonaws.com
+            - MYSQL_DB_PORT=3306
+            - MYSQL_DB_USERNAME=admin
+            - MYSQL_DB_PASSWORD=09132021SmoothStack!
+            - USERS_MS_URL=http://users:9002/user
+            - MYSQL_DB_SCHEMA=jwutopia
+            - SERVER_PORT=9001
+    users:
+        image: 902316339693.dkr.ecr.us-east-2.amazonaws.com/jw-users:userimage
+        ports: 
+        - '9002:9002'
+        # container_name: users
+        environment:
+            - MYSQL_DB_HOST=utopia.cztkke9ur9zz.us-east-2.rds.amazonaws.com
+            - MYSQL_DB_PORT=3306
+            - MYSQL_DB_USERNAME=admin
+            - MYSQL_DB_PASSWORD=09132021SmoothStack!
+            - MYSQL_DB_SCHEMA=jwutopia
+            - SERVER_PORT=9002
+    bookings:
+        image: 902316339693.dkr.ecr.us-east-2.amazonaws.com/jw-bookings:bookingimage
+        ports: 
+        - '9003:9003'
+        depends_on:
+            - "users"
+        environment:
+            - MYSQL_DB_HOST=utopia.cztkke9ur9zz.us-east-2.rds.amazonaws.com
+            - MYSQL_DB_PORT=3306
+            - MYSQL_DB_USERNAME=admin
+            - MYSQL_DB_PASSWORD=09132021SmoothStack!
+            - USERS_MS_URL=http://users:9002/user
+            - MYSQL_DB_SCHEMA=jwutopia
+            - SERVER_PORT=9003
+                    
+            
