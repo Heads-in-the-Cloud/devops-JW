@@ -1,17 +1,17 @@
 ---
-- hosts: tag_type_jwansible
+- hosts: ec2-3-16-27-91.us-east-2.compute.amazonaws.com
   gather_facts: no
   become: true
   
   tasks:
   - name: install openJDK
-    yum: 
+    ansible.builtin.yum: 
       name: java
       state: latest
   
 
   - name: install java8 for jenkins 
-    yum:
+    ansible.builtin.yum:
       name: java-1.8.0-openjdk-devel
       state: present
 
